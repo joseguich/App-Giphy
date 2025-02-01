@@ -1,0 +1,28 @@
+<div
+    class="bg-black fixed top-0 z-100 left-0 h-lvh w-68"
+    id="sidebar"
+>
+    <h2 class="text-white text-2xl text-center py-4 font-bold ">Historial GifsApp</h2>
+    <hr class="text-gray-600">
+
+    <ng-template #notHistory>
+        <div class="flex justify-center items-center h-1/1">
+            <h3 class="text-white text-lg font-bold">No hay historial de busqueda</h3>
+        </div>
+    </ng-template>
+
+    <div
+        *ngIf="historyName.length > 0; else notHistory"
+        class="px-2"
+    >
+        <button
+            *ngFor="let gifs of historyName"
+            (click)="onClickGifs(gifs)"
+            class="w-full bg-gray-200 text-black font-bold text-xl px-4 my-2 rounded-lg cursor-pointer shadow-xl shadow-gray-500 hover:-translate-y-2 transition-all duration-300"
+            type="button"
+        >
+            {{ gifs | titlecase }}
+        </button>
+
+    </div>
+</div>

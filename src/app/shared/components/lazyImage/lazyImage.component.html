@@ -1,0 +1,17 @@
+<div class="flex justify-center items-center">
+    <img
+        class="object-cover w-full h-54"
+        [src]="url"
+        [alt]="title"
+        (load)="loaders()"
+        [ngStyle]="{display: loadLoaders ? '' : 'none'}"
+    >
+
+    <img
+        *ngIf="!loadLoaders"
+        class="w-36 h-36"
+        src="loaders.svg"
+        alt="loaders espera"
+    >
+
+</div>
