@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Gifs, GifsApiGihpy } from '../interfaces/gifs.interface';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable, map, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -36,8 +37,10 @@ export class GifsService {
   saveLocalStorage(): void {
     localStorage.setItem('gifsHistory', JSON.stringify(this._gifsHistory));
   }
-  searchGifs(tag: string) {
-    if (!tag || !tag.trim()) return;
+  searchGifs(tag: string): Observable<Gifs[]> {
+    if (!tag || !tag.trim()) {
+      return of([]);
+    }
 
     this.organizeGifsHistory(tag);
 
@@ -47,11 +50,15 @@ export class GifsService {
       .set('q', tag)
       .set('limit', 10);
 
-    this.http
+    const observable = this.http
       .get<GifsApiGihpy>(`${this.gifsUrl}/search`, { params })
-      .subscribe((res) => {
-        this.gifs = res.data;
-      });
+      .pipe(map((res) => res.data)); // Pipe para crear un nuevo arreglo para pa petición
+
+    observable.subscribe((data) => {
+      this.gifs = data;
+    });
+
+    return observable;
   }
 
   loadLocalStorage(): void {
